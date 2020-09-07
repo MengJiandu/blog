@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="孟建都">
+
+
+    <meta name="subtitle" content="孟建都的博客">
+
+
+    <meta name="description" content="孟建都的博客">
+
+
+    <meta name="keywords" content="孟建都,博客">
+
+
+<title>elementui使用tinymce富文本编辑器（格式刷功能) | 孟建都的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Jarrett&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Jarrett&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">elementui使用tinymce富文本编辑器（格式刷功能)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">孟建都</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 7, 2020&nbsp;&nbsp;10:49:07</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><a target="_blank" rel="noopener" href="http://mlovex.top/upload/2020/6/tinymce-5e0bf57158b44729a40dd49e20538178.zip">tinymce文件</a></p>
+<ul>
+<li>首先下载富文本编译器的源码到服务器静态资源中</li>
+<li>编写富文本模块</li>
+</ul>
+<p>index.vue文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div :<span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;&#123;fullscreen:fullscreen&#125;&quot;</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;tinymce-container&quot;</span> :style=<span class="string">&quot;&#123;width:containerWidth&#125;&quot;</span>&gt;</span><br><span class="line">    &lt;textarea :id=<span class="string">&quot;tinymceId&quot;</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;tinymce-textarea&quot;</span> /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> plugins <span class="keyword">from</span> <span class="string">&#x27;./plugins&#x27;</span></span><br><span class="line"><span class="keyword">import</span> toolbar <span class="keyword">from</span> <span class="string">&#x27;./toolbar&#x27;</span></span><br><span class="line"><span class="keyword">import</span> load <span class="keyword">from</span> <span class="string">&#x27;./dynamicLoadScript&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one</span></span><br><span class="line"><span class="keyword">const</span> tinymceCDN = <span class="string">&#x27;你的路径/tinymce.min.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">&#x27;Tinymce&#x27;</span>,</span><br><span class="line">  components: &#123; &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    id: &#123;</span><br><span class="line">      type: <span class="built_in">String</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;vue-tinymce-&#x27;</span> + +<span class="keyword">new</span> <span class="built_in">Date</span>() + ((<span class="built_in">Math</span>.random() * <span class="number">1000</span>).toFixed(<span class="number">0</span>) + <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    value: &#123;</span><br><span class="line">      type: <span class="built_in">String</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    toolbar: &#123;</span><br><span class="line">      type: <span class="built_in">Array</span>,</span><br><span class="line">      required: <span class="literal">false</span>,</span><br><span class="line">      <span class="keyword">default</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    menubar: &#123;</span><br><span class="line">      type: <span class="built_in">String</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">&#x27;file edit insert view format table&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    height: &#123;</span><br><span class="line">      type: [<span class="built_in">Number</span>, <span class="built_in">String</span>],</span><br><span class="line">      required: <span class="literal">false</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="number">360</span></span><br><span class="line">    &#125;,</span><br><span class="line">    width: &#123;</span><br><span class="line">      type: [<span class="built_in">Number</span>, <span class="built_in">String</span>],</span><br><span class="line">      required: <span class="literal">false</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">&#x27;auto&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      hasChange: <span class="literal">false</span>,</span><br><span class="line">      hasInit: <span class="literal">false</span>,</span><br><span class="line">      tinymceId: <span class="built_in">this</span>.id,</span><br><span class="line">      fullscreen: <span class="literal">false</span>,</span><br><span class="line">      languageTypeList: &#123;</span><br><span class="line">        <span class="string">&#x27;en&#x27;</span>: <span class="string">&#x27;en&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;zh&#x27;</span>: <span class="string">&#x27;zh_CN&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;es&#x27;</span>: <span class="string">&#x27;es_MX&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;ja&#x27;</span>: <span class="string">&#x27;ja&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    containerWidth() &#123;</span><br><span class="line">      <span class="keyword">const</span> width = <span class="built_in">this</span>.width</span><br><span class="line">      <span class="keyword">if</span> (<span class="regexp">/^[\d]+(\.[\d]+)?$/</span>.test(width)) &#123; <span class="comment">// matches `100`, `&#x27;100&#x27;`</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;width&#125;</span>px`</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> width</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    value(val) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!<span class="built_in">this</span>.hasChange &amp;&amp; <span class="built_in">this</span>.hasInit) &#123;</span><br><span class="line">        <span class="built_in">this</span>.$nextTick(<span class="function">() =&gt;</span></span><br><span class="line">          <span class="built_in">window</span>.tinymce.get(<span class="built_in">this</span>.tinymceId).setContent(val || <span class="string">&#x27;&#x27;</span>))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted() &#123;</span><br><span class="line">    <span class="built_in">this</span>.init()</span><br><span class="line">  &#125;,</span><br><span class="line">  activated() &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.tinymce) &#123;</span><br><span class="line">      <span class="built_in">this</span>.initTinymce()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  deactivated() &#123;</span><br><span class="line">    <span class="built_in">this</span>.destroyTinymce()</span><br><span class="line">  &#125;,</span><br><span class="line">  destroyed() &#123;</span><br><span class="line">    <span class="built_in">this</span>.destroyTinymce()</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    init() &#123;</span><br><span class="line">      <span class="comment">// dynamic load tinymce from cdn</span></span><br><span class="line">      load(tinymceCDN, <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) &#123;</span><br><span class="line">          <span class="built_in">this</span>.$message.error(err.message)</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.initTinymce()</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    initTinymce() &#123;</span><br><span class="line">      <span class="keyword">const</span> _this = <span class="built_in">this</span></span><br><span class="line">      <span class="built_in">window</span>.tinymce.init(&#123;</span><br><span class="line">        selector: <span class="string">`#<span class="subst">$&#123;<span class="built_in">this</span>.tinymceId&#125;</span>`</span>,</span><br><span class="line">        language: <span class="built_in">this</span>.languageTypeList[<span class="string">&#x27;zh&#x27;</span>],</span><br><span class="line">        height: <span class="built_in">this</span>.height,</span><br><span class="line">        body_class: <span class="string">&#x27;panel-body &#x27;</span>,</span><br><span class="line">        object_resizing: <span class="literal">false</span>,</span><br><span class="line">        toolbar: <span class="built_in">this</span>.toolbar.length &gt; <span class="number">0</span> ? <span class="built_in">this</span>.toolbar : toolbar,</span><br><span class="line">        menubar: <span class="built_in">this</span>.menubar,</span><br><span class="line">        plugins: plugins,</span><br><span class="line">        fontsize_formats: <span class="string">&#x27;8pt 9pt 10pt 11pt 12pt 13pt 14pt 18pt 24pt 36pt&#x27;</span>,</span><br><span class="line">        font_formats: <span class="string">&#x27;宋体=宋体;黑体=黑体;仿宋_GB2312=仿宋_GB2312;楷体_GB2312=楷体_GB2312;隶书=隶书;幼圆=幼圆;微软雅黑=microsoft yahei;&#x27;</span>,</span><br><span class="line">        end_container_on_empty_block: <span class="literal">true</span>,</span><br><span class="line">        powerpaste_word_import: <span class="string">&#x27;clean&#x27;</span>,</span><br><span class="line">        code_dialog_height: <span class="number">450</span>,</span><br><span class="line">        code_dialog_width: <span class="number">1000</span>,</span><br><span class="line">        advlist_bullet_styles: <span class="string">&#x27;square&#x27;</span>,</span><br><span class="line">        advlist_number_styles: <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">        imagetools_cors_hosts: [<span class="string">&#x27;www.tinymce.com&#x27;</span>, <span class="string">&#x27;codepen.io&#x27;</span>],</span><br><span class="line">        default_link_target: <span class="string">&#x27;_blank&#x27;</span>,</span><br><span class="line">        link_title: <span class="literal">false</span>,</span><br><span class="line">        nonbreaking_force_tab: <span class="literal">true</span>, <span class="comment">// inserting nonbreaking space &amp;nbsp; need Nonbreaking Space Plugin</span></span><br><span class="line">        init_instance_callback: <span class="function"><span class="params">editor</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (_this.value) &#123;</span><br><span class="line">            editor.setContent(_this.value)</span><br><span class="line">          &#125;</span><br><span class="line">          _this.hasInit = <span class="literal">true</span></span><br><span class="line">          editor.on(<span class="string">&#x27;NodeChange Change KeyUp SetContent&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.hasChange = <span class="literal">true</span></span><br><span class="line">            <span class="built_in">this</span>.$emit(<span class="string">&#x27;input&#x27;</span>, editor.getContent())</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">        setup(editor) &#123;</span><br><span class="line">          editor.on(<span class="string">&#x27;FullscreenStateChanged&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">            _this.fullscreen = e.state</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">        convert_urls: <span class="literal">false</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    destroyTinymce() &#123;</span><br><span class="line">      <span class="keyword">const</span> tinymce = <span class="built_in">window</span>.tinymce.get(<span class="built_in">this</span>.tinymceId)</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.fullscreen) &#123;</span><br><span class="line">        tinymce.execCommand(<span class="string">&#x27;mceFullScreen&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (tinymce) &#123;</span><br><span class="line">        tinymce.destroy()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    setContent(value) &#123;</span><br><span class="line">      <span class="built_in">window</span>.tinymce.get(<span class="built_in">this</span>.tinymceId).setContent(value)</span><br><span class="line">    &#125;,</span><br><span class="line">    getContent() &#123;</span><br><span class="line">      <span class="built_in">window</span>.tinymce.get(<span class="built_in">this</span>.tinymceId).getContent()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>plugin.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plugins = [<span class="string">&#x27;formatpainter &#x27;</span> +</span><br><span class="line"><span class="string">&#x27;advlist anchor autolink autosave code codesample  directionality &#x27;</span> +</span><br><span class="line"><span class="string">&#x27;emoticons fullscreen hr image imagetools insertdatetime link lists media &#x27;</span> +</span><br><span class="line"><span class="string">&#x27;nonbreaking noneditable pagebreak paste preview print save searchreplace &#x27;</span> +</span><br><span class="line"><span class="string">&#x27;spellchecker tabfocus table template textpattern visualblocks visualchars wordcount&#x27;</span>]</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> plugins</span><br></pre></td></tr></table></figure>
+
+<p>toolBar.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> toolbar = [<span class="string">&#x27;searchreplace bold italic underline strikethrough &#x27;</span> +</span><br><span class="line"><span class="string">&#x27;alignleft aligncenter alignright outdent indent  blockquote undo redo&#x27;</span> +</span><br><span class="line"><span class="string">&#x27; removeformat subscript superscript code codesample&#x27;</span>, <span class="string">&#x27;formatpainter fontselect &#x27;</span> +</span><br><span class="line"><span class="string">&#x27;fontsizeselect backcolor hr bullist numlist link image charmap anchor&#x27;</span> +</span><br><span class="line"><span class="string">&#x27; pagebreak insertdatetime media&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> toolbar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>dynamicLoadScript.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> callbacks = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadedTinymce</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2144</span></span><br><span class="line">  <span class="comment">// check is successfully downloaded script</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">window</span>.tinymce</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dynamicLoadScript = <span class="function">(<span class="params">src, callback</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> existingScript = <span class="built_in">document</span>.getElementById(src)</span><br><span class="line">  <span class="keyword">const</span> cb = callback || <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!existingScript) &#123;</span><br><span class="line">    <span class="keyword">const</span> script = <span class="built_in">document</span>.createElement(<span class="string">&#x27;script&#x27;</span>)</span><br><span class="line">    script.src = src <span class="comment">// src url for the third-party library being loaded.</span></span><br><span class="line">    script.id = src</span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(script)</span><br><span class="line">    callbacks.push(cb)</span><br><span class="line">    <span class="keyword">const</span> onEnd = <span class="string">&#x27;onload&#x27;</span> <span class="keyword">in</span> script ? stdOnEnd : ieOnEnd</span><br><span class="line">    onEnd(script)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (existingScript &amp;&amp; cb) &#123;</span><br><span class="line">    <span class="keyword">if</span> (loadedTinymce()) &#123;</span><br><span class="line">      cb(<span class="literal">null</span>, existingScript)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      callbacks.push(cb)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">stdOnEnd</span>(<span class="params">script</span>) </span>&#123;</span><br><span class="line">    script.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// this.onload = null here is necessary</span></span><br><span class="line">      <span class="comment">// because even IE9 works not like others</span></span><br><span class="line">      <span class="built_in">this</span>.onerror = <span class="built_in">this</span>.onload = <span class="literal">null</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> cb <span class="keyword">of</span> callbacks) &#123;</span><br><span class="line">        cb(<span class="literal">null</span>, script)</span><br><span class="line">      &#125;</span><br><span class="line">      callbacks = <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">    script.onerror = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.onerror = <span class="built_in">this</span>.onload = <span class="literal">null</span></span><br><span class="line">      cb(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&#x27;Failed to load &#x27;</span> + src), script)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">ieOnEnd</span>(<span class="params">script</span>) </span>&#123;</span><br><span class="line">    script.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.readyState !== <span class="string">&#x27;complete&#x27;</span> &amp;&amp; <span class="built_in">this</span>.readyState !== <span class="string">&#x27;loaded&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">      <span class="built_in">this</span>.onreadystatechange = <span class="literal">null</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> cb <span class="keyword">of</span> callbacks) &#123;</span><br><span class="line">        cb(<span class="literal">null</span>, script) <span class="comment">// there is no way to catch loading errors in IE8</span></span><br><span class="line">      &#125;</span><br><span class="line">      callbacks = <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> dynamicLoadScript</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>重点在index.vue 文件data数据中tinymceCDN修改为下载下来的地址 </li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>孟建都</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2020/09/07/elementui%E4%BD%BF%E7%94%A8tinymce%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%88%E6%A0%BC%E5%BC%8F%E5%88%B7%E5%8A%9F%E8%83%BD)/">http://example.com/2020/09/07/elementui%E4%BD%BF%E7%94%A8tinymce%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%88%E6%A0%BC%E5%BC%8F%E5%88%B7%E5%8A%9F%E8%83%BD)/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/09/07/golang%E9%85%8D%E7%BD%AEGoproxy/">golang配置Goproxy</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/07/elementui%EF%BC%882.13.0%EF%BC%89%E7%9A%84datepicer%E7%BB%84%E4%BB%B6%E6%97%B6%E9%97%B4%E5%B0%918%E4%B8%AA%E5%B0%8F%E6%97%B6bug/">elementui（2.13.0）的datepicer组件时间少8个小时bug</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 孟建都 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

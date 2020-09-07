@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="孟建都">
+
+
+    <meta name="subtitle" content="孟建都的博客">
+
+
+    <meta name="description" content="孟建都的博客">
+
+
+    <meta name="keywords" content="孟建都,博客">
+
+
+<title>SpringBoot项目在Url上面出现{}[]等字符后报错 | 孟建都的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Jarrett&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Jarrett&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">SpringBoot项目在Url上面出现{}[]等字符后报错</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">孟建都</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 7, 2020&nbsp;&nbsp;10:49:07</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Spring-Boot-2-3-1-RELEASE版本中出现The-valid-characters-are-defined-in-RFC-7230-and-RFC-3986"><a href="#Spring-Boot-2-3-1-RELEASE版本中出现The-valid-characters-are-defined-in-RFC-7230-and-RFC-3986" class="headerlink" title="Spring Boot 2.3.1.RELEASE版本中出现The valid characters are defined in RFC 7230 and RFC 3986"></a>Spring Boot 2.3.1.RELEASE版本中出现The valid characters are defined in RFC 7230 and RFC 3986</h3><ul>
+<li>问题描述</li>
+</ul>
+<p>需要前端传过来一个数组后台来接收通过URL,前端调用的时候出现[]字符,出现HTTP400错误,查看日志</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: Invalid character found in the request target [/user/collection/goods?goodsIds[]=<span class="number">7</span>]. </span><br><span class="line">The valid characters are defined in RFC <span class="number">7230</span> and RFC <span class="number">3986</span></span><br><span class="line">at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:<span class="number">491</span>) ~[tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:<span class="number">260</span>) ~[tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:<span class="number">65</span>) [tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:<span class="number">868</span>) [tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:<span class="number">1590</span>) [tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:<span class="number">49</span>) [tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:<span class="number">1149</span>) [na:<span class="number">1.8</span>.<span class="number">0_212</span>]</span><br><span class="line">at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:<span class="number">624</span>) [na:<span class="number">1.8</span>.<span class="number">0_212</span>]</span><br><span class="line">at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:<span class="number">61</span>) [tomcat-embed-core-<span class="number">9.0</span>.<span class="number">36.</span>jar!/:<span class="number">9.0</span>.<span class="number">36</span>]</span><br><span class="line">at java.lang.Thread.run(Thread.java:<span class="number">748</span>) [na:<span class="number">1.8</span>.<span class="number">0_212</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>查看别人博客发现是Tomcat的问题,tomcat8.0以上版本遵从RFC规范添加了对Url的特殊字符的限制，url中只允许包含英文字母(a-zA-Z)、数字(0-9)、-_.~四个特殊字符以及保留字符( ! * ’ ( ) ; : @ &amp; = + $ , / ? # [ ] ) (26*2+10+4+18=84)这84个字符</p>
+</li>
+<li><p>解决方法</p>
+</li>
+</ul>
+<p>在启动类上中加入这段代码既可以解决</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ConfigurableServletWebServerFactory <span class="title">webServerFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    TomcatServletWebServerFactory factory = <span class="keyword">new</span> TomcatServletWebServerFactory();</span><br><span class="line">    factory.addConnectorCustomizers(connector -&gt; connector.setProperty(<span class="string">&quot;relaxedQueryChars&quot;</span>, <span class="string">&quot;|&#123;&#125;[]&quot;</span>));</span><br><span class="line">    <span class="keyword">return</span> factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/baiHoo_chen/article/details/85221852/">参考博客</a>#### 四级标题</p>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>孟建都</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2020/09/07/SpringBoot%E9%A1%B9%E7%9B%AE%E5%9C%A8Url%E4%B8%8A%E9%9D%A2%E5%87%BA%E7%8E%B0%7B%7D[]%E7%AD%89%E5%AD%97%E7%AC%A6%E5%90%8E%E6%8A%A5%E9%94%99/">http://example.com/2020/09/07/SpringBoot%E9%A1%B9%E7%9B%AE%E5%9C%A8Url%E4%B8%8A%E9%9D%A2%E5%87%BA%E7%8E%B0%7B%7D[]%E7%AD%89%E5%AD%97%E7%AC%A6%E5%90%8E%E6%8A%A5%E9%94%99/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/09/07/vue%E8%B7%B3%E8%BD%AC%E4%B9%8B%E5%90%8E%E4%BF%9D%E5%AD%98%E6%9F%A5%E8%AF%A2%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%88%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BF%94%E5%9B%9E%E8%83%BD%E5%A4%9F%E4%BF%9D%E5%AD%98%E6%9F%A5%E8%AF%A2%E7%9A%84%E6%9D%A1%E4%BB%B6%EF%BC%89/">vue跳转之后保存查询的数据（浏览器返回能够保存查询的条件）</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/07/NPM%E9%85%8D%E7%BD%AEtaobao%E9%95%9C%E5%83%8F%E6%8F%90%E5%8D%87%E4%B8%8B%E8%BD%BD%E9%80%9F%E5%BA%A6%E3%80%91/">NPM配置taobao镜像提升下载速度】</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 孟建都 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

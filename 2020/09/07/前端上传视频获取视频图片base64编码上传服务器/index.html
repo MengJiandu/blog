@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="孟建都">
+
+
+    <meta name="subtitle" content="孟建都的博客">
+
+
+    <meta name="description" content="孟建都的博客">
+
+
+    <meta name="keywords" content="孟建都,博客">
+
+
+<title>前端上传视频获取视频图片base64编码上传服务器 | 孟建都的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Jarrett&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Jarrett&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">前端上传视频获取视频图片base64编码上传服务器</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">孟建都</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 7, 2020&nbsp;&nbsp;10:49:07</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <ul>
+<li>前端获取上传的视频图片，废话不多说直接上代码</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">beforeUploadVideo(file)&#123;</span><br><span class="line">    <span class="comment">// 创建一个视频的html标签</span></span><br><span class="line">    <span class="built_in">this</span>.video = <span class="built_in">document</span>.createElement(<span class="string">&#x27;video&#x27;</span>)</span><br><span class="line">    <span class="built_in">this</span>.video.preload = <span class="string">&#x27;metadata&#x27;</span></span><br><span class="line">    <span class="comment">// 将file对象转为URL</span></span><br><span class="line">    <span class="built_in">this</span>.video.src = URL.createObjectURL(file)</span><br><span class="line">    <span class="comment">// 播放视频</span></span><br><span class="line">    <span class="built_in">this</span>.video.play()</span><br><span class="line">    <span class="comment">// video方法 加载好数据之后</span></span><br><span class="line">    <span class="built_in">this</span>.video.onloadedmetadata = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//设置了延迟5秒获取</span></span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> canvas = <span class="built_in">document</span>.createElement(<span class="string">&#x27;canvas&#x27;</span>)</span><br><span class="line">          <span class="keyword">const</span> width = <span class="built_in">this</span>.video.videoWidth <span class="comment">// canvas的尺寸和图片一样</span></span><br><span class="line">          <span class="keyword">const</span> height = <span class="built_in">this</span>.video.videoHeight</span><br><span class="line">          canvas.width = width</span><br><span class="line">          canvas.height = height</span><br><span class="line">          canvas.getContext(<span class="string">&#x27;2d&#x27;</span>).drawImage(<span class="built_in">this</span>.video, <span class="number">0</span>, <span class="number">0</span>, width, height) <span class="comment">// 绘制canvas</span></span><br><span class="line">          <span class="keyword">let</span> dataURL = canvas.toDataURL(<span class="string">&#x27;image/jpeg&#x27;</span>) <span class="comment">// 转换为base64</span></span><br><span class="line">          dataURL = dataURL.replace(<span class="string">&#x27;data:image/jpeg;base64,&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">          <span class="comment">// dataURL就是base64格式的代码 需要后台解析</span></span><br><span class="line">          <span class="built_in">console</span>.log(dataURL)</span><br><span class="line">        &#125;, <span class="number">5000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>后端获取base64编码上传图片返回<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过sun.misc.BASE64Decoder解析成ByteBuffer</span></span><br><span class="line">ByteBuffer bytes = <span class="keyword">new</span> BASE64Decoder().decodeBufferToByteBuffer(base64.getBase64());</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>孟建都</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2020/09/07/%E5%89%8D%E7%AB%AF%E4%B8%8A%E4%BC%A0%E8%A7%86%E9%A2%91%E8%8E%B7%E5%8F%96%E8%A7%86%E9%A2%91%E5%9B%BE%E7%89%87base64%E7%BC%96%E7%A0%81%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8/">http://example.com/2020/09/07/%E5%89%8D%E7%AB%AF%E4%B8%8A%E4%BC%A0%E8%A7%86%E9%A2%91%E8%8E%B7%E5%8F%96%E8%A7%86%E9%A2%91%E5%9B%BE%E7%89%87base64%E7%BC%96%E7%A0%81%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/09/07/%E9%80%9A%E8%BF%87%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E4%BC%98%E5%8C%96IFELSE%E6%88%96SWITCHCASE%E8%AF%AD%E5%8F%A5/">通过策略模式优化IFELSE或SWITCHCASE语句</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/07/%E9%85%8D%E7%BD%AEmaven%E7%9A%84%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/">配置maven的阿里云镜像</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 孟建都 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
